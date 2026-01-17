@@ -29,6 +29,16 @@ document.addEventListener('DOMContentLoaded', () => {
 async function handleStartApp() {
     updateStatus('Solicitando ubicación...', 'neutral');
 
+    // Check for Secure Context (HTTPS) - Critical for mobile
+    const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    const isSecure = window.location.protocol === 'https:' || isLocalhost;
+
+    if (!isSecure) {
+        console.warn("Geolocation requires a secure context (HTTPS) on non-localhost origins.");
+        // We don't return here, we let it try and fail so we can catch the specific error, 
+        // but we'll use this flag to give a better error message.
+    }
+
     try {
         const position = await getGeolocation();
         currentUserLocation = {
@@ -38,16 +48,33 @@ async function handleStartApp() {
 
         switchView('map');
         initMap(currentUserLocation);
-
-        // Fetch data immediately after map init
         fetchNearbyRestaurants(currentUserLocation);
 
     } catch (error) {
         console.error("Geolocation error:", error);
         let msg = 'No pudimos obtener tu ubicación. ';
-        if (error.code === 1) msg += 'Por favor permite el acceso.';
-        else if (error.code === 2) msg += 'Posición no disponible.';
-        else if (error.code === 3) msg += 'Se agotó el tiempo de espera.';
+
+        if (error.code === 1) { // PERMISSION_DENIED
+            // Check if we can detect if it's a hard block
+            if (navigator.permissions) {
+                try {
+                    const permissionStatus = await navigator.permissions.query({ name: 'geolocation' });
+                    if (permissionStatus.state === 'denied') {
+                        msg = '⛔ Acceso denegado. Tienes bloqueada la ubicación para este sitio. Toca el candado 🔒 en la barra de dirección > Permisos > restablecer.';
+                    } else {
+                        msg = 'Por favor permite el acceso a la ubicación cuando el navegador lo solicite.';
+                    }
+                } catch (e) {
+                    msg = 'Por favor permite el acceso. Asegúrate de que tu navegador tenga permiso en el sistema.';
+                }
+            } else {
+                msg = 'Permiso denegado. Revisa la configuración de tu navegador.';
+            }
+        }
+        else if (error.code === 2) msg += 'Posición no disponible. Verifica que el GPS esté activo.';
+        else if (error.code === 3) msg += 'Se agotó el tiempo. Intenta de nuevo en un lugar abierto.';
+        else msg += error.message || 'Error desconocido.';
+
         updateStatus(msg, 'error');
     }
 }
@@ -75,10 +102,11 @@ function getGeolocation() {
         if (!navigator.geolocation) {
             reject(new Error("Geolocation not supported"));
         } else {
+            // Using enableHighAccuracy: false is faster and more reliable on mobile web
             navigator.geolocation.getCurrentPosition(resolve, reject, {
-                enableHighAccuracy: true,
-                timeout: 10000,
-                maximumAge: 0
+                enableHighAccuracy: false,
+                timeout: 20000,
+                maximumAge: 30000 // Accept cached positions up to 30s old
             });
         }
     });
