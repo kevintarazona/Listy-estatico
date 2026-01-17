@@ -72,10 +72,10 @@
                     class="h-32 md:h-40 w-auto drop-shadow-2xl hover:scale-105 transition-transform duration-300">
             </div>
             <h1
-                class="text-6xl md:text-8xl font-black mb-4 tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-orange-500 to-red-600 drop-shadow-sm">
+                class="text-5xl md:text-8xl font-black mb-4 tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-orange-500 to-red-600 drop-shadow-sm">
                 LISTY
             </h1>
-            <p class="text-xl md:text-2xl text-slate-300 font-light mb-12 tracking-wide">
+            <p class="text-lg md:text-2xl text-slate-300 font-light mb-12 tracking-wide">
                 Tu hambre, resuelta en <span class="text-emerald-400 font-semibold typing-effect">segundos</span>.
             </p>
 
@@ -112,11 +112,12 @@
             <div id="map" class="flex-1 h-full w-full bg-slate-800 z-0"></div>
 
             <!-- Results List (Floating Sidebar) -->
-            <div class="absolute top-20 left-4 bottom-4 w-full md:w-96 z-[999] pointer-events-none flex flex-col">
+            <div class="absolute z-[999] pointer-events-none flex flex-col transition-all duration-300
+                        left-4 right-4 bottom-4 top-auto max-h-[50vh]
+                        md:top-20 md:left-4 md:bottom-4 md:right-auto md:w-96 md:max-h-full">
                 <!-- Search/Results Header -->
-                <div
-                    class="glass-panel p-4 mb-4 rounded-xl pointer-events-auto transform transition-all duration-300 hover:scale-[1.01]">
-                    <div class="flex justify-between items-center mb-2">
+                <div class="glass-panel p-4 mb-2 rounded-xl pointer-events-auto flex-shrink-0">
+                    <div class="flex justify-between items-center">
                         <h3 class="font-bold text-lg text-white"><i
                                 class="fa-solid fa-list-ul text-orange-500 mr-2"></i>Resultados</h3>
                         <span id="results-count"
@@ -127,7 +128,7 @@
 
                 <!-- Scrollable List -->
                 <div id="places-list"
-                    class="flex-1 overflow-y-auto pr-2 space-y-3 pointer-events-auto pb-4 scrollbar-hide">
+                    class="flex-1 overflow-y-auto pr-2 space-y-3 pointer-events-auto pb-2 scrollbar-hide mask-fade-bottom">
                     <!-- Loading Skeleton -->
                     <div class="glass-panel p-4 rounded-xl animate-pulse">
                         <div class="h-4 bg-slate-700 rounded w-3/4 mb-2"></div>
