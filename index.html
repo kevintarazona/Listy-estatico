@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listy - Encuentra comida cerca</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        slate: {
+                            850: '#1e293b', // Custom darker slate
+                            900: '#0f172a',
+                        },
+                        orange: {
+                            500: '#f97316',
+                        },
+                        emerald: {
+                            400: '#34d399',
+                        }
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body
+    class="bg-slate-900 text-white h-screen w-screen overflow-hidden font-sans antialiased selection:bg-orange-500 selection:text-white">
+
+    <!-- Background Elements -->
+    <div class="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+        <div
+            class="absolute top-[-10%] left-[-10%] w-[40rem] h-[40rem] bg-orange-500/10 rounded-full blur-3xl filter opacity-50">
+        </div>
+        <div
+            class="absolute bottom-[-10%] right-[-10%] w-[40rem] h-[40rem] bg-emerald-400/10 rounded-full blur-3xl filter opacity-50">
+        </div>
+    </div>
+
+    <!-- LANDING VIEW -->
+    <section id="landing-view"
+        class="relative z-10 w-full h-full flex flex-col items-center justify-center p-6 text-center transition-all duration-500">
+        <div class="max-w-2xl animate-fade-in-up">
+            <div class="mb-8 inline-block">
+                <img src="LISTYLOGO.png" alt="Listy Logo"
+                    class="h-32 md:h-40 w-auto drop-shadow-2xl hover:scale-105 transition-transform duration-300">
+            </div>
+            <h1
+                class="text-6xl md:text-8xl font-black mb-4 tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-orange-500 to-red-600 drop-shadow-sm">
+                LISTY
+            </h1>
+            <p class="text-xl md:text-2xl text-slate-300 font-light mb-12 tracking-wide">
+                Tu hambre, resuelta en <span class="text-emerald-400 font-semibold typing-effect">segundos</span>.
+            </p>
+
+            <button id="btn-start"
+                class="group relative px-8 py-4 bg-orange-500 hover:bg-orange-600 text-white font-bold text-lg rounded-full shadow-lg hover:shadow-orange-500/50 transition-all duration-300 transform hover:-translate-y-1 active:scale-95 flex items-center justify-center mx-auto gap-3 overflow-hidden">
+                <span
+                    class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></span>
+                <i class="fa-solid fa-location-crosshairs text-xl"></i>
+                <span>Buscar Comida Ahora</span>
+            </button>
+            <p id="status-message" class="mt-6 text-slate-400 text-sm h-6 transition-opacity"></p>
+        </div>
+    </section>
+
+    <!-- MAP VIEW -->
+    <section id="map-view" class="hidden relative z-10 w-full h-full flex-col">
+        <!-- Header -->
+        <header
+            class="h-16 bg-slate-900/80 backdrop-blur-md border-b border-white/10 flex items-center justify-between px-6 absolute top-0 left-0 right-0 z-[1000] shadow-md">
+            <div class="flex items-center gap-3 cursor-pointer" onclick="location.reload()">
+                <img src="LISTYLOGO.png" alt="Listy Logo"
+                    class="h-10 w-auto drop-shadow-md hover:opacity-80 transition-opacity">
+                <h2 class="text-2xl font-bold tracking-tight text-white">Listy</h2>
+            </div>
+            <button
+                class="w-10 h-10 rounded-full bg-slate-800 hover:bg-slate-700 flex items-center justify-center transition-colors border border-white/10 text-slate-300">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </header>
+
+        <!-- Main Content -->
+        <div class="flex-1 relative flex overflow-hidden pt-16">
+            <!-- Map Container -->
+            <div id="map" class="flex-1 h-full w-full bg-slate-800 z-0"></div>
+
+            <!-- Results List (Floating Sidebar) -->
+            <div class="absolute top-20 left-4 bottom-4 w-full md:w-96 z-[999] pointer-events-none flex flex-col">
+                <!-- Search/Results Header -->
+                <div
+                    class="glass-panel p-4 mb-4 rounded-xl pointer-events-auto transform transition-all duration-300 hover:scale-[1.01]">
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 class="font-bold text-lg text-white"><i
+                                class="fa-solid fa-list-ul text-orange-500 mr-2"></i>Resultados</h3>
+                        <span id="results-count"
+                            class="bg-orange-500/20 text-orange-400 text-xs px-2 py-1 rounded-full border border-orange-500/20">0
+                            encontrados</span>
+                    </div>
+                </div>
+
+                <!-- Scrollable List -->
+                <div id="places-list"
+                    class="flex-1 overflow-y-auto pr-2 space-y-3 pointer-events-auto pb-4 scrollbar-hide">
+                    <!-- Loading Skeleton -->
+                    <div class="glass-panel p-4 rounded-xl animate-pulse">
+                        <div class="h-4 bg-slate-700 rounded w-3/4 mb-2"></div>
+                        <div class="h-3 bg-slate-700/50 rounded w-1/2"></div>
+                    </div>
+                    <div class="glass-panel p-4 rounded-xl animate-pulse delay-100">
+                        <div class="h-4 bg-slate-700 rounded w-2/3 mb-2"></div>
+                        <div class="h-3 bg-slate-700/50 rounded w-1/2"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
