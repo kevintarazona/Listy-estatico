@@ -203,6 +203,22 @@ function createRestaurantMarker(place) {
 async function fetchNearbyRestaurants(location) {
     updatePlacesListState('loading');
 
+    // CACHE CHECK
+    const cached = sessionStorage.getItem('listy_cache');
+    if (cached) {
+        const { lat, lng, data, timestamp } = JSON.parse(cached);
+        const age = Date.now() - timestamp;
+        const dist = getDistanceFromLatLonInKm(lat, lng, location.lat, location.lng);
+
+        // Cache valid for 10 minutes and if user moved less than 100 meters
+        if (age < 1000 * 60 * 10 && dist < 0.1) {
+            console.log("Using cached data");
+            restaurants = data;
+            renderResults();
+            return;
+        }
+    }
+
     // Overpass QL
     const radius = 2000; // 2km radius
     const query = `
@@ -227,12 +243,38 @@ async function fetchNearbyRestaurants(location) {
         const data = await response.json();
         restaurants = data.elements.filter(el => el.tags && (el.tags.name)); // Only show places with names for better UI
 
+        // SET CACHE
+        sessionStorage.setItem('listy_cache', JSON.stringify({
+            lat: location.lat,
+            lng: location.lng,
+            data: restaurants,
+            timestamp: Date.now()
+        }));
+
         renderResults();
 
     } catch (error) {
         console.error("Fetch API error:", error);
         updatePlacesListState('error', 'Error al cargar restaurantes.');
     }
+}
+
+// Haversine Formula for distance
+function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+    var R = 6371; // Radius of the earth in km
+    var dLat = deg2rad(lat2 - lat1);
+    var dLon = deg2rad(lon2 - lon1);
+    var a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    var d = R * c;
+    return d;
+}
+
+function deg2rad(deg) {
+    return deg * (Math.PI / 180);
 }
 
 // --- Rendering & UI ---
