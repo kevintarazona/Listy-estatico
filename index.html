@@ -65,29 +65,161 @@
 
     <!-- LANDING VIEW -->
     <section id="landing-view"
-        class="relative z-10 w-full h-full flex flex-col items-center justify-center p-6 text-center transition-all duration-500">
-        <div class="max-w-2xl animate-fade-in-up">
-            <div class="mb-8 inline-block">
-                <img src="LISTYLOGO.png" alt="Listy Logo"
-                    class="h-32 md:h-40 w-auto drop-shadow-2xl hover:scale-105 transition-transform duration-300">
-            </div>
-            <h1
-                class="text-5xl md:text-8xl font-black mb-4 tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-orange-500 to-red-600 drop-shadow-sm">
-                LISTY
-            </h1>
-            <p class="text-lg md:text-2xl text-slate-300 font-light mb-12 tracking-wide">
-                Tu hambre, resuelta en <span class="text-emerald-400 font-semibold typing-effect">segundos</span>.
-            </p>
+        class="relative z-10 w-full h-full flex flex-col justify-between overflow-y-auto scrollbar-hide transition-all duration-500">
 
-            <button id="btn-start"
-                class="group relative px-8 py-4 bg-orange-500 hover:bg-orange-600 text-white font-bold text-lg rounded-full shadow-lg hover:shadow-orange-500/50 transition-all duration-300 transform hover:-translate-y-1 active:scale-95 flex items-center justify-center mx-auto gap-3 overflow-hidden">
-                <span
-                    class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></span>
-                <i class="fa-solid fa-location-crosshairs text-xl"></i>
-                <span>Buscar Comida Ahora</span>
-            </button>
-            <p id="status-message" class="mt-6 text-slate-400 text-sm h-6 transition-opacity"></p>
+        <!-- Main Content -->
+        <div class="flex-1 w-full flex flex-col items-center justify-center p-6 text-center shrink-0 min-h-[500px]">
+            <div class="max-w-2xl animate-fade-in-up">
+                <div class="mb-8 inline-block">
+                    <img src="LISTYLOGO.png" alt="Listy Logo"
+                        class="h-32 md:h-40 w-auto drop-shadow-2xl hover:scale-105 transition-transform duration-300">
+                </div>
+                <h1
+                    class="text-5xl md:text-8xl font-black mb-4 tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-orange-500 to-red-600 drop-shadow-sm">
+                    LISTY
+                </h1>
+                <p class="text-lg md:text-2xl text-slate-300 font-light mb-12 tracking-wide">
+                    Tu hambre, resuelta en <span class="text-emerald-400 font-semibold typing-effect">segundos</span>.
+                </p>
+
+                <button id="btn-start"
+                    class="group relative px-8 py-4 bg-orange-500 hover:bg-orange-600 text-white font-bold text-lg rounded-full shadow-lg hover:shadow-orange-500/50 transition-all duration-300 transform hover:-translate-y-1 active:scale-95 flex items-center justify-center mx-auto gap-3 overflow-hidden">
+                    <span
+                        class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></span>
+                    <i class="fa-solid fa-location-crosshairs text-xl"></i>
+                    <span>Buscar Comida Ahora</span>
+                </button>
+                <p id="status-message" class="mt-6 text-slate-400 text-sm h-6 transition-opacity"></p>
+            </div>
         </div>
+
+        <!-- Footer -->
+        <footer class="w-full bg-slate-900/40 backdrop-blur-xl border-t border-white/5 py-12 relative z-20 shrink-0">
+            <div class="container mx-auto px-6 lg:px-12">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+
+                    <!-- Brand & Socials -->
+                    <div class="flex flex-col items-start gap-4">
+                        <div class="flex items-center gap-2">
+                            <span class="text-2xl font-black text-white tracking-tighter">Listy</span>
+                        </div>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            La forma más rápida de encontrar tu próxima comida favorita. Explora, decide y disfruta.
+                        </p>
+                        <div class="flex gap-4 mt-2">
+                            <a href="#"
+                                class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-orange-500 hover:text-white transition-all duration-300 transform hover:scale-110">
+                                <i class="fa-brands fa-instagram text-lg"></i>
+                            </a>
+                            <a href="#"
+                                class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-black hover:text-white transition-all duration-300 transform hover:scale-110">
+                                <i class="fa-brands fa-tiktok text-lg"></i>
+                            </a>
+                            <a href="#"
+                                class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-blue-600 hover:text-white transition-all duration-300 transform hover:scale-110">
+                                <i class="fa-brands fa-facebook-f text-lg"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Contact Info -->
+                    <div>
+                        <h4 class="text-white font-bold text-lg mb-6 relative inline-block">
+                            Contacto
+                            <span class="absolute -bottom-2 left-0 w-1/2 h-1 bg-orange-500 rounded-full"></span>
+                        </h4>
+                        <ul class="space-y-4 text-sm text-slate-300">
+                            <li>
+                                <a href="https://wa.me/"
+                                    class="flex items-center gap-3 hover:text-emerald-400 transition-colors group">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-emerald-500/10 flex items-center justify-center group-hover:bg-emerald-500/20 transition-colors">
+                                        <i class="fa-brands fa-whatsapp text-emerald-400"></i>
+                                    </div>
+                                    <span>WhatsApp Support</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="mailto:Listy@gmail.com"
+                                    class="flex items-center gap-3 hover:text-orange-400 transition-colors group">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-orange-500/10 flex items-center justify-center group-hover:bg-orange-500/20 transition-colors">
+                                        <i class="fa-regular fa-envelope text-orange-500"></i>
+                                    </div>
+                                    <span>Listy@gmail.com</span>
+                                </a>
+                            </li>
+                            <li>
+                                <div class="flex items-center gap-3 group">
+                                    <div class="w-8 h-8 rounded-full bg-blue-500/10 flex items-center justify-center">
+                                        <i class="fa-solid fa-location-dot text-blue-400"></i>
+                                    </div>
+                                    <span>Torre xpress de Macaracuay</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Legal Links -->
+                    <div>
+                        <h4 class="text-white font-bold text-lg mb-6 relative inline-block">
+                            Legal
+                            <span class="absolute -bottom-2 left-0 w-1/2 h-1 bg-emerald-400 rounded-full"></span>
+                        </h4>
+                        <ul class="space-y-3 text-sm text-slate-400">
+                            <li><a href="#"
+                                    class="hover:text-white hover:translate-x-1 transition-all inline-block">Términos y
+                                    Condiciones</a></li>
+                            <li><a href="#"
+                                    class="hover:text-white hover:translate-x-1 transition-all inline-block">Política de
+                                    Privacidad</a></li>
+                            <li><a href="#"
+                                    class="hover:text-white hover:translate-x-1 transition-all inline-block">Política de
+                                    Cookies</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Downloads -->
+                    <div>
+                        <h4 class="text-white font-bold text-lg mb-6 relative inline-block">
+                            Descárgala ya
+                            <span class="absolute -bottom-2 left-0 w-1/2 h-1 bg-purple-500 rounded-full"></span>
+                        </h4>
+                        <div class="flex flex-col gap-3">
+                            <button
+                                class="bg-black/40 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-300 rounded-xl p-3 flex items-center gap-4 w-fit group">
+                                <i
+                                    class="fa-brands fa-google-play text-3xl group-hover:text-green-400 transition-colors"></i>
+                                <div class="text-left">
+                                    <p class="text-[0.65rem] uppercase text-slate-400 leading-tight tracking-wider">
+                                        Disponible en</p>
+                                    <p class="text-sm font-bold text-white">Google Play</p>
+                                </div>
+                            </button>
+                            <button
+                                class="bg-black/40 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-300 rounded-xl p-3 flex items-center gap-4 w-fit group">
+                                <i class="fa-brands fa-apple text-3xl group-hover:text-white transition-colors"></i>
+                                <div class="text-left">
+                                    <p class="text-[0.65rem] uppercase text-slate-400 leading-tight tracking-wider">
+                                        Consíguelo en el</p>
+                                    <p class="text-sm font-bold text-white">App Store</p>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Copyright -->
+                <div
+                    class="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+                    <p>Listy © 2024 - Todos los derechos reservados.</p>
+                    <p class="flex items-center gap-1">
+                        Hecho en Venezuela con <i
+                            class="fa-solid fa-heart text-red-500 animate-[pulse_1s_infinite]"></i>
+                    </p>
+                </div>
+            </div>
+        </footer>
     </section>
 
     <!-- MAP VIEW -->
