@@ -6,6 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Listy - Encuentra comida cerca</title>
 
+    <!-- Performance Optimizations -->
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://unpkg.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://overpass-api.de">
+    <link rel="dns-prefetch" href="https://overpass-api.de">
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -71,7 +78,7 @@
         <div class="flex-1 w-full flex flex-col items-center justify-center p-6 text-center shrink-0 min-h-[500px]">
             <div class="max-w-2xl animate-fade-in-up">
                 <div class="mb-8 inline-block">
-                    <img src="LISTYLOGO.png" alt="Listy Logo"
+                    <img src="LISTYLOGO.webp" alt="Listy Logo" width="160" height="160"
                         class="h-32 md:h-40 w-auto drop-shadow-2xl hover:scale-105 transition-transform duration-300">
                 </div>
                 <h1
@@ -228,7 +235,7 @@
         <header
             class="h-16 bg-slate-900/80 backdrop-blur-md border-b border-white/10 flex items-center justify-between px-6 absolute top-0 left-0 right-0 z-[1000] shadow-md">
             <div class="flex items-center gap-3 cursor-pointer" onclick="location.reload()">
-                <img src="LISTYLOGO.png" alt="Listy Logo"
+                <img src="LISTYLOGO.webp" alt="Listy Logo" width="40" height="40"
                     class="h-10 w-auto drop-shadow-md hover:opacity-80 transition-opacity">
                 <h2 class="text-2xl font-bold tracking-tight text-white">Listy</h2>
             </div>
